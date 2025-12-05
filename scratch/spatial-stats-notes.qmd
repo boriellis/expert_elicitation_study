@@ -1,0 +1,119 @@
+---
+title: "spatial-stats-notes"
+format: html
+execute: 
+  echo: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(terra)
+library(tidyterra)
+library(cowplot)
+theme_set(theme_classic())
+
+```
+
+## what that map look like
+
+Let's say our expert-elicited best estimate UD and "actual"[^1] UD look like this:
+
+[^1]: In quotes because the "actual" distribution is itself a model
+
+```{r}
+#| label: ud-vect
+
+expert_ud_95_x <- rbind(c(1, 3), c(8, 9), c(9.5, 3))
+expert_ud_50_x <- rbind(c(5, 4), c(5, 5), c(7, 5), c(7, 4))
+actual_ud_95_x <- rbind(c(4, 2), c(4, 9), c(9, 9), c(9, 2))
+actual_ud_50_x <- rbind(c(4.5, 2.5), c(8, 2.5), c(8, 6))
+ud_geom <- rbind(
+  cbind(object = 1, part = 1, expert_ud_50_x, hole = 0),
+  cbind(object = 2, part = 1, expert_ud_95_x, hole = 0),
+  cbind(object = 2, part = 2, expert_ud_50_x, hole = 1),
+  cbind(object = 3, part = 1, actual_ud_50_x, hole = 0),
+  cbind(object = 4, part = 1, actual_ud_95_x, hole = 0),
+  cbind(object = 4, part = 2, actual_ud_50_x, hole = 1)
+)
+colnames(ud_geom)[3:4] <- c("x", "y")
+ud <- vect(ud_geom, "polygons")
+ud$ud <- rep(c(0.5, 0.95), 2)
+ud$ud_fct <- factor(ud$ud, 
+                    levels = c(0.5, 0.95), 
+                    labels = c("50%", "95%"))
+ud$source <- rep(c("expert", "actual"), each = 2)
+ggplot() + 
+  geom_spatvector(aes(fill = ud_fct), ud) +
+  facet_grid(rows = vars(source))
+
+```
+
+Once converted to rasters, they look like this:
+
+```{r}
+#| label: ud-rast
+
+ud_template <- rast(ext(0, 10, 0, 10),
+                    nrows = 100,
+                    ncols = 100)
+ud_rast <- c(ud_template, ud_template)
+values(ud_rast) <- 0
+ud_rast_fct <- rasterize(ud, 
+                         ud_template, 
+                         field = "ud_fct",
+                         by = ud$source)
+ud_rast_n50 <- apply(values(ud_rast_fct == "50%"), 
+                     2, 
+                     \(x) sum(x, na.rm = TRUE))
+ud_rast_n95 <- apply(values(ud_rast_fct == "95%"), 
+                     2, 
+                     \(x) sum(x, na.rm = TRUE))
+for (i in 1:2) {
+  ud_rast[[i]][ud_rast_fct[[i]] == "50%"] <- 0.5 / ud_rast_n50[i]
+  ud_rast[[i]][ud_rast_fct[[i]] == "95%"] <- 0.45 / ud_rast_n95[i]
+  ud_rast[[i]][is.nan(ud_rast[[i]])] <- 0.05 / (ncell(ud_rast) - ud_rast_n50[i] - ud_rast_n95[i])
+}
+
+names(ud_rast) <- sort(unique(ud$source))
+
+ggplot() +
+  geom_spatraster(data = ud_rast) +
+  facet_grid(~lyr) +
+  scale_fill_distiller("Utilization", palette = "RdBu")
+
+```
+
+## is map gud
+
+Here's a scatter with expert UD on the x-axis and actual UD on the y-axis. There's a lot of duplicate combinations, so the size of the point indicates the number of grid cells with that combination. E.g. there's a ton of (0,0)s. The blue line is the linear regression line, the red line is 1:1.
+
+```{r}
+#| label: ud-scatter
+
+ud_df <- tibble(
+  actual = values(ud_rast)[, 1],
+  expert = values(ud_rast)[, 2]
+)
+ud_summ <- count(ud_df, actual, expert)
+ggplot(ud_summ, aes(expert, actual)) +
+  geom_point(aes(size = n)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_abline(intercept = 0, slope = 1, color = "firebrick", linetype = "dashed")
+
+```
+
+What's the correlation coefficient?
+
+```{r}
+#| label: ud-cor
+
+cor(ud_df$actual, ud_df$expert)
+
+```
+
+Fine, not amazing.
+
+That's how we do the "best estimate" comparison. Now for the confidence interval part.
