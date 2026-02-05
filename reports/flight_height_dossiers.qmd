@@ -1,0 +1,30 @@
+---
+title: "flight_height_dossiers"
+format: html
+---
+
+# Species Flight Height Background Information
+
+It is not necessary for you to have first-hand experience with the species to contribute to this exercise: we have collated background knowledge on the species to ensure a common baseline of information between expert respondents. Please review the below information before progressing, keeping in mind that , it can be assumed that the below information and maps are based on limited data. We have also provided the eBird citizen science sightings maps for the species in the POCS region - note that these density maps are not standardized by effort and so it can be assumed that the distributions shown are biased heavily by where observers are.
+
+We encourage you to use your own knowledge, experience, information sources on the species to supplement the provided information in informing your responses.
+
+## Common Loon
+
+We were unable to find empirical data on Common Loon flight heights at sea.
+
+For Arctic Loons in the Pacific Ocean, Ainley et al. (2015) estimated a flight height of 45% time spent in a rotor-swept zone with an airgap of 10 meters using a model based on visual data from vessel surveys with a sample size of \<20 observations.
+
+For Red-throated Loons in the Northeast Atlantic, Paton et al. (2010) 21.7% of 106 observations were flying within a 25m-125m rotor-swept zone.
+
+## Northern Gannet
+
+## Surf Scoter
+
+## Herring Gull
+
+## Common Murre
+
+## Northern Fulmar
+
+## Literature Cited
