@@ -11,7 +11,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Expert Elicitation Workshop Overview & Purpose
+# Expert Elicitation Workshop Overview & Purpose
 
 Conservation and management decisions often contend with substantial data limitations. In these situations, expert judgement is frequently used to estimate parameters in the absence of empirical data. However, expert judgement may be influenced by cognitive and motivational biases. These biases are particularly concerning when eliciting expert judgement to fill data gaps for poorly studied species. 
 

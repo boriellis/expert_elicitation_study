@@ -9,3 +9,10 @@ a {
 a:visited {
     color: #a62b0c; /* Replace with your desired color */
 }
+
+
+.cell-output-display table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
