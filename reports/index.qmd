@@ -37,6 +37,6 @@ It is not necessary for you to have first-hand experience with the species we're
 
 **Please review the dossier of background information for each data data type here:**
 
-Seabird at-sea spatial distribution dossier
+[Seabird at-sea spatial distribution dossier](https://boriellis.github.io/expert_elicitation_study/spatial_dossiers)
 
 [Seabird flight height dossier](https://boriellis.github.io/expert_elicitation_study/flight_height_dossiers)
