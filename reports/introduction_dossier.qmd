@@ -1,0 +1,8 @@
+---
+title: "introduction_dossier"
+format: html
+---
+
+# Expert Elicitation Workshop Context
+
+Conservation decisions frequently have to be made despite limited data.

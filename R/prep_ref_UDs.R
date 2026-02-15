@@ -34,7 +34,7 @@ normalize_annuals <- function(annuals){
 make_UDs <- function(norms) {
   uds <- lapply(seq_len(terra::nlyr(norms)), function(i) {
     r <- norms[[i]]
-    r[r < global(r, "max", na.rm = TRUE)[[1]] / 100] <- NA
+    r[r < global(r, "max", na.rm = TRUE)[[1]] * 0.01] <- NA
     r <- r / global(r, "sum", na.rm = TRUE)[[1]]
     # extract and sort values
     vals <- terra::values(r, na.rm = TRUE)

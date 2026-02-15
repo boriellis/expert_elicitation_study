@@ -1,0 +1,8 @@
+---
+title: "spatial_dossiers"
+format: html
+---
+
+It is not necessary for you to have first-hand experience with the species to contribute to this exercise: we have collated background knowledge on the species to ensure a common baseline of information between expert respondents. Please review the below information before progressing, keeping in mind that , it can be assumed that the below information and maps are based on limited data. We have also provided the eBird citizen science sightings maps for the species in the POCS region - note that these density maps are not standardized by effort and so it can be assumed that the distributions shown are biased heavily by where observers are.
+
+We encourage you to use your own knowledge, experience, information sources on the species to supplement the provided information in informing your responses.
