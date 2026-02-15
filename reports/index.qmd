@@ -13,20 +13,30 @@ editor_options:
 
 # Expert Elicitation Workshop Overview & Purpose
 
+## Background
+
 Conservation and management decisions often contend with substantial data limitations. In these situations, expert judgement is frequently used to estimate parameters in the absence of empirical data. However, expert judgement may be influenced by cognitive and motivational biases. These biases are particularly concerning when eliciting expert judgement to fill data gaps for poorly studied species. 
 
 This workshop’s goal is a quantitative comparison of expert elicitation methods for imputing missing data in conservation-relevant datasets.Your participation contributes valuable data and will help us develop evidence-based recommendations for conservationists and resource managers when they rely on expert elicitation.
 
 Over the course of the workshop, you will be asked to provide your expert judgement for two classes of seabird data:
 
-1.  **Typical flight heights** 
+1.  **At-sea spatial distributions**
 
-2.  **At-sea spatial distributions**
+2.  **Typical flight heights** 
 
 You will be asked to generate estimates using **two different elicitation formats**, allowing us to compare the relative performance of each approach.
 
-To evaluate the performance of these elicitation methods, we will compare your estimates to  reference datasets. For this reason, we are working with published data and have **intentionally blinded a subset of species from each dataset**. You will be asked to produce estimates for these blinded species as if empirical data were unavailable.
+To evaluate the performance of these elicitation methods, we will compare your estimates to reference datasets. For this reason, we are working with published data and have **intentionally blinded a subset of species from each dataset**. You will be asked to produce estimates for these blinded species as if empirical data were unavailable.
 
 Because of this design, it is **important that participants do not consult or reference the original source datasets** used for testing leading up to or during the workshop. Doing so would undermine our ability to evaluate the elicitation methods. Any information needed to complete the exercises will be provided in the workshop materials and species dossiers.
 
-\
+## Workshop preparation
+
+It is not necessary for you to have first-hand experience with the species we're eliciting your input for to contribute to this exercise: to ensure a common baseline of information between expert respondents, we have collated background knowledge on the species for you to review before providing your responses.
+
+**Please review the dossier of background information for each data data type here:**
+
+Seabird at-sea spatial distribution dossier
+
+[Seabird flight height dossier](https://boriellis.github.io/expert_elicitation_study/flight_height_dossiers)
