@@ -56,7 +56,7 @@ Leirness, Jeffery B, Josh Adams, Lisa T Ballance, et al. *Modeling At-Sea Densit
 ![](images/POJA_range.png)*\
 *
 
-### Range Map
+### eBird Sightings
 
 *Source: [eBird](https://ebird.org/species/pomjae)*
 
@@ -71,7 +71,7 @@ Leirness, Jeffery B, Josh Adams, Lisa T Ballance, et al. *Modeling At-Sea Densit
 
 ![](images/CAAU_range.png)
 
-### Range Map
+### eBird Sightings
 
 *Source: [eBird](https://ebird.org/species/casauk)*
 
@@ -85,7 +85,7 @@ Leirness, Jeffery B, Josh Adams, Lisa T Ballance, et al. *Modeling At-Sea Densit
 
 ![](images/NOFU_range.png)
 
-### Range Map
+### eBird Sightings
 
 *Source: [eBird](https://ebird.org/species/norful)*
 
@@ -99,7 +99,7 @@ Leirness, Jeffery B, Josh Adams, Lisa T Ballance, et al. *Modeling At-Sea Densit
 
 ![](images/BLKI_range.png)
 
-### Range Map
+### eBird Sightings
 
 *Source: [eBird](https://ebird.org/species/bklkit)*
 
@@ -113,7 +113,7 @@ Leirness, Jeffery B, Josh Adams, Lisa T Ballance, et al. *Modeling At-Sea Densit
 
 ![](images/LAAL_range.png)
 
-### Range Map
+### eBird Sightings
 
 *Source: [eBird](https://ebird.org/species/layalb)*
 
@@ -127,7 +127,7 @@ Leirness, Jeffery B, Josh Adams, Lisa T Ballance, et al. *Modeling At-Sea Densit
 
 ![](images/ASSP_range.png)
 
-### Range Map
+### eBird Sightings
 
 *Source: [eBird](https://ebird.org/species/asspet)*
 ![](images/ASSP_ebird.png)
