@@ -31,34 +31,31 @@ We recognize that some participants may already be familiar with the results of 
 
 *Paton, Peter, Kristopher Winiarski, Carol Trocki, and Scott McWilliams. Spatial Distribution, Abundance, and Flight Ecology of Birds in Nearshore and Offshore Waters of Rhode Island. Technical Report #11. University of Rhode Island, 2010.*
 
-\
+##  **Surf Scoter**
 
-## **Common Loon**
++---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Species       | \% time in 20m air gap RSZ \[95% CI\]  | \% time in 25m air gap RSZ \[95% CI\]  | \% time in 30m air gap RSZ \[95% CI\]  | Mean flight height (m) |
++---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Common Scoter | 1.0 \[\<0.1-17.0\]^1^                  |                                        |                                        |                        |
++---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Common Scoter | 1.9 \[0.1 - 10.9\]^2^                  |                                        |                                        |                        |
++---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Common Scoter | 0.2^3^                                 |                                        |                                        |                        |
++---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Common Scoter |                                        | 0.75^4^                                |                                        |                        |
++---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Sea duck spp. |                                        |                                        |                                        | 18.5 ± 19.0^5^         |
++---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
 
-+---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Species             | \% time in 20m air gap RSZ \[95% CI\]  | \% time in 25m air gap RSZ \[95% CI\]  | \% time in 30m air gap RSZ \[95% CI\]  | Mean flight height (m) |
-+---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Black-throated Loon | 0.1 \[0.1-30.5\]^1^                    |                                        |                                        |                        |
-+---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Black-throated Loon | 7.3 \[0.0 - 39.7\]^2^                  |                                        |                                        |                        |
-+---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Red-throated Loon   | 2.0 \[0.1-22.4\]^1^                    |                                        |                                        |                        |
-+---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Red-throated Loon   | 1.0 \[0.3 - 9.6\]^2^                   |                                        |                                        |                        |
-+---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Loon spp.           |                                        |                                        | 13.0^3^                                |                        |
-+---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Loon spp.           |                                        |                                        |                                        | 19.0 ± 16.1^4^         |
-+---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-
-\
 ^1^Cook et al., 2012: Flight height distributions were estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
 
 ^2^Johnston et al,. 2014: Flight heights were estimated using a maximum-likelihood cubic spline model fit to categorical altitude data from boat-based surveys in UK waters, assuming a common species-specific distribution across sites and using bootstrapping to derive confidence intervals.
 
-^3^Borkenhagen et al., 2018: Observers used rangefinders during at-sea surveys in the German North Sea
+^3^PMSS, 2007: Reported as percent individuals observed flying within rotor-swept zone during visual at-sea surveys in UK waters
 
-^4^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands \
+^4^Leopold et al., 2004: Reported as percent individuals observed flying within rotor-swept zone during visual at-sea surveys in the North Sea.
+
+^5^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands \
 
 ## **Common Murre**
 
@@ -112,6 +109,47 @@ We recognize that some participants may already be familiar with the results of 
 
 ^6^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands 
 
+## **Common Loon**
+
++---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Species             | \% time in 20m air gap RSZ \[95% CI\]  | \% time in 25m air gap RSZ \[95% CI\]  | \% time in 30m air gap RSZ \[95% CI\]  | Mean flight height (m) |
++---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Black-throated Loon | 0.1 \[0.1-30.5\]^1^                    |                                        |                                        |                        |
++---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Black-throated Loon | 7.3 \[0.0 - 39.7\]^2^                  |                                        |                                        |                        |
++---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Red-throated Loon   | 2.0 \[0.1-22.4\]^1^                    |                                        |                                        |                        |
++---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Red-throated Loon   | 1.0 \[0.3 - 9.6\]^2^                   |                                        |                                        |                        |
++---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Loon spp.           |                                        |                                        | 13.0^3^                                |                        |
++---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Loon spp.           |                                        |                                        |                                        | 19.0 ± 16.1^4^         |
++---------------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+
+\
+^1^Cook et al., 2012: Flight height distributions were estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
+
+^2^Johnston et al,. 2014: Flight heights were estimated using a maximum-likelihood cubic spline model fit to categorical altitude data from boat-based surveys in UK waters, assuming a common species-specific distribution across sites and using bootstrapping to derive confidence intervals.
+
+^3^Borkenhagen et al., 2018: Observers used rangefinders during at-sea surveys in the German North Sea
+
+^4^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands 
+
+## **Northern Fulmar**
+
++-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Species         | \% time in 20m air gap RSZ \[95% CI\]  | \% time in 25m air gap RSZ \[95% CI\]  | \% time in 30m air gap RSZ \[95% CI\]  | Mean flight height (m) |
++-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Northern Fulmar | 0.2 \[\<0.1 - 22.1\]^1^                |                                        |                                        |                        |
++-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+| Northern Fulmar | 1.0 \[0.0 - 9.2\]^2^                   |                                        |                                        |                        |
++-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
+
+^1^Cook et al., 2012: Flight height distributions were estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
+
+^2^Johnston et al,. 2014: Flight heights were estimated using a maximum-likelihood cubic spline model fit to categorical altitude data from boat-based surveys in UK waters, assuming a common species-specific distribution across sites and using bootstrapping to derive confidence intervals.
+
 ## **Northern Gannet**
 
 +-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
@@ -120,8 +158,6 @@ We recognize that some participants may already be familiar with the results of 
 | Northern Gannet | 9.6 \[\<0.1-19.9\]^1^                  |                                        |                                        |                        |
 +-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
 | Northern Gannet | 12.6 \[6.2 - 20.0\]^2^                 |                                        |                                        |                        |
-|                 |                                        |                                        |                                        |                        |
-|                 | \                                      |                                        |                                        |                        |
 +-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
 | Northern Gannet | 16^3^                                  |                                        |                                        |                        |
 +-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
@@ -143,47 +179,7 @@ We recognize that some participants may already be familiar with the results of 
 
 ^5^Borkenhagen et al., 2018: Observers used rangefinders during at-sea surveys in the German North Sea 
 
-^6^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands\
-
-## **Surf Scoter**
-
-+---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Species       | \% time in 20m air gap RSZ \[95% CI\]  | \% time in 25m air gap RSZ \[95% CI\]  | \% time in 30m air gap RSZ \[95% CI\]  | Mean flight height (m) |
-+---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Common Scoter | 1.0 \[\<0.1-17.0\]^1^                  |                                        |                                        |                        |
-+---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Common Scoter | 1.9 \[0.1 - 10.9\]^2^                  |                                        |                                        |                        |
-+---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Common Scoter | 0.2^3^                                 |                                        |                                        |                        |
-+---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Common Scoter |                                        | 0.75^4^                                |                                        |                        |
-+---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Sea duck spp. |                                        |                                        |                                        | 18.5 ± 19.0^5^         |
-+---------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-
-^1^Cook et al., 2012: Flight height distributions were estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
-
-^2^Johnston et al,. 2014: Flight heights were estimated using a maximum-likelihood cubic spline model fit to categorical altitude data from boat-based surveys in UK waters, assuming a common species-specific distribution across sites and using bootstrapping to derive confidence intervals.
-
-^3^PMSS, 2007: Reported as percent individuals observed flying within rotor-swept zone during visual at-sea surveys in UK waters
-
-^4^Leopold et al., 2004: Reported as percent individuals observed flying within rotor-swept zone during visual at-sea surveys in the North Sea.
-
-^5^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands \
-
-## **Northern Fulmar**
-
-+-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Species         | \% time in 20m air gap RSZ \[95% CI\]  | \% time in 25m air gap RSZ \[95% CI\]  | \% time in 30m air gap RSZ \[95% CI\]  | Mean flight height (m) |
-+-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Northern Fulmar | 0.2 \[\<0.1 - 22.1\]^1^                |                                        |                                        |                        |
-+-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-| Northern Fulmar | 1.0 \[0.0 - 9.2\]^2^                   |                                        |                                        |                        |
-+-----------------+----------------------------------------+----------------------------------------+----------------------------------------+------------------------+
-
-^1^Cook et al., 2012: Flight height distributions were estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
-
-^2^Johnston et al,. 2014: Flight heights were estimated using a maximum-likelihood cubic spline model fit to categorical altitude data from boat-based surveys in UK waters, assuming a common species-specific distribution across sites and using bootstrapping to derive confidence intervals.
+^6^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands
 
 ## **Literature Cited**
 

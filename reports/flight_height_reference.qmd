@@ -1,0 +1,41 @@
+---
+output: html_document
+format: 
+  html:
+    css: styles.css
+execute:
+  echo: false
+  warning: false  # Suppress warnings
+  message: false  # Suppress messages
+editor_options: 
+  chunk_output_type: console
+---
+
+# Atlantic Seabird Flight Height Dataset
+
+We’ve compiled flight height data for seabirds occurring in the North Atlantic by collating results from two vessel-based survey studies. In both studies, observed flight heights were recorded in discrete altitudinal bands above sea level. The percentage of individuals observed in each band is used as a proxy for the percentage of time a species spends flying within that band. Our metric of interest is the zone between 25 and 125 m above sea level, as this range overlaps the rotor-swept zone of offshore wind turbines and is therefore relevant to collision sensitivity.
+
+| Species | \% in flight observed between 25-125m asl | Number of Observations | Observation locations |
+|----|----|----|----|
+| Scaup sp. | 54.5% | 55 | Northwest Atlantic^1^ |
+| Common Eider | 0.6% | 503 | Northwest Atlantic^1^ & North Sea^2^ |
+| White-winged Scoter | 0% | 157 | Northwest Atlantic^1^ |
+| Common Scoter | 0.8% | 2258 | North Sea^2^ |
+| Black Scoter | 0% | 277 | Northwest Atlantic^1^ |
+| Razorbill | 0% | 87 | Northwest Atlantic^1^ & North Sea^2^ |
+| Dovekie | 0% | 28 | Northwest Atlantic^1^ |
+| Black-legged Kittiwake | 8.9% | 687 | Northwest Atlantic^1^ & North Sea^2^ |
+| Laughing Gull | 4.2% | 117 | Northwest Atlantic^1^ |
+| Small gull sp. (Little, Black-headed, and Common) | 9.7% | 1862 | North Sea^2^ |
+| Great Black-backed Gull | 9.5% | 843 | Northwest Atlantic^1^ & North Sea^2^ |
+| Common/Arctic Tern | 1.2% | 1069 | Northwest Atlantic^1^ & North Sea^2^ |
+| Sandwich Tern | 4.5% | 419 | North Sea^2^ |
+| Red-throated/Black-throated Loon | 12.2% | 384 | Northwest Atlantic^1^ & North Sea^2^ |
+| Wilson's Storm-Petrel | 0% | 759 | Northwest Atlantic^1^ |
+| Cory's Shearwater | 0% | 407 | Northwest Atlantic^1^ |
+| Great Shearwater | 0% | 216 | Northwest Atlantic^1^ |
+| Great Cormorant | 7.3% | 929 | North Sea^2^ |
+
+^1^Paton, Peter, Kristopher Winiarski, Carol Trocki, and Scott McWilliams. Spatial Distribution, Abundance, and Flight Ecology of Birds in Nearshore and Offshore Waters of Rhode Island. Technical Report #11. University of Rhode Island, 2010.
+
+^2^Leopold, M.F., C.J. Camphuysen, C.J.F. ter Braak, E.M. Dijkman, K. Kersting, and S.M.J van Lieshout. Baseline Studies North Sea Wind Farms: Lot 5 Marine Birds in and around the Future Sites Nearshore Windfarm (NSW) and Q7. Alterra-Rapport 1048. Alterra, Wageningen, 2004.
