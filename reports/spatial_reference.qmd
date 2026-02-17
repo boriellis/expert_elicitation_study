@@ -1,0 +1,171 @@
+---
+format: html
+toc: TRUE
+toc-title: "Table of Contents"
+---
+
+# **Pacific Seabird Distribution Dataset**
+
+The species distribution models (SDMs) developed by Leirness et al. (2021) describe the seasonal distributions of seabirds in the POCS region. In the maps below, you will find the model predictions for each species aggregated across seasons (i.e., one annual map per species).
+
+### Important notes
+
+-   Due to data limitations or high proportions of unidentified observations (e.g., "loon sp.") for particular taxa, some of the original models were produced for species groups instead of individual species.
+
+-   The maps below have been simplified to aid interpretation and comparison between species. The zone marked in light blue can be interpreted as the species range within the region. Within that zone, yellow represents the region that contains 95% of the predicted density for the species, and red represents the region that contains the core 50% of density. The zone demarcated in grey shows the overall study area.
+
+-   Note that in some cases distributions are highly concentrated, making the visualization of distribution challenging - we recommend zooming in if a map looks blank at a glance.
+
+## Species maps
+
+### Combined Scoter Model
+
+![](images/SCOT_annual_ref_ud.png)
+
+### Combined Phalarope Model
+
+![](images/PHAL_annual_ref_ud.png)
+
+### Combined Parasitic & Long-tailed Jaeger Model
+
+![](images/PAJA-LTJA_annual_ref_ud.png)
+
+### South Polar Skua
+
+![](images/SPSK_annual_ref_ud.png)
+
+### Rhinoceros Auklet
+
+![](images/RHAU_annual_ref_ud.png)
+
+### Tufted Puffin
+
+![](images/TUPU_annual_ref_ud.png)
+
+### Marbled Murrelet
+
+![](images/MAMU_annual_ref_ud.png)
+
+### Pigeon Guillemot
+
+![](images/PIGU_annual_ref_ud.png)
+
+### Common Murre
+
+![](images/COMU_annual_ref_ud.png)
+
+### Ancient Murrelet
+
+![](images/ANMU_annual_ref_ud.png)
+
+### Combined Scripp's, Guadalupe, & Craveri's Murrelet Model
+
+![](images/SCMU-GUMU-CRMU_annual_ref_ud.png)
+
+### Sabine's Gull
+
+![](images/SAGU_annual_ref_ud.png)
+
+### Bonaparte's Gull
+
+![](images/BOGU_annual_ref_ud.png)
+
+### Heermann's Gull
+
+![](images/HEEG_annual_ref_ud.png)
+
+### Combined Western & Glaucous-winged Gull Model
+
+![](images/WEGU-WGWH-GWGU_annual_ref_ud.png)
+
+### California Gull
+
+![](images/CAGU_annual_ref_ud.png)
+
+### Combined Herring & Iceland Gull Model
+
+![](images/HERG-ICGU_annual_ref_ud.png)
+
+### Caspian Tern
+
+![](images/CATE_annual_ref_ud.png)
+
+### Combined Common & Arctic Tern Model
+
+![](images/COTE-ARTE_annual_ref_ud.png)
+
+### Combined Royal & Elegant Tern Model
+
+![](images/ROYT-ELTE_annual_ref_ud.png)
+
+### Combined Western & Clark's Grebe Model
+
+![](images/WEGR-CLGR_annual_ref_ud.png)
+
+### Red-throated Loon
+
+![](images/RTLO_annual_ref_ud.png)
+
+### Common Loon
+
+![](images/COLO_annual_ref_ud.png)
+
+### Combined Loon Model (includes Pacific Loon)
+
+![](images/LOON_annual_ref_ud.png)
+
+### Black-footed Albatross
+
+![](images/BFAL_annual_ref_ud.png)
+
+### Fork-tailed Storm-Petrel
+
+![](images/FTSP_annual_ref_ud.png)
+
+### Leach's Storm Petrel
+
+![](images/LESP_annual_ref_ud.png)
+
+### Black Storm-Petrel
+
+![](images/BLSP_annual_ref_ud.png)
+
+### Murphy's Petrel
+
+![](images/MUPE_annual_ref_ud.png)
+
+### Cook's Petrel
+
+![](images/COPE_annual_ref_ud.png)
+
+### Pink-footed Shearwater
+
+![](images/PFSH_annual_ref_ud.png)
+
+### Buller's Shearwater
+
+![](images/BULS_annual_ref_ud.png)
+
+### Combined Short-tailed, Sooty, & Flesh-footed Shearwater Model
+
+![](images/STTS-SOSH-FFSH_annual_ref_ud.png)
+
+### Black-vented Shearwater
+
+![](images/BVSH_annual_ref_ud.png)
+
+### Brandt's Cormorant
+
+![](images/BRAC_annual_ref_ud.png)
+
+### Pelagic Cormorant
+
+![](images/PECO_annual_ref_ud.png)
+
+### Double-crested Cormorant
+
+![](images/DCCO_annual_ref_ud.png)
+
+### Brown Pelican
+
+![](images/BRPE_annual_ref_ud.png)

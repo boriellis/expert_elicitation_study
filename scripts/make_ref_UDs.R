@@ -6,7 +6,7 @@
 
 # Part 1: Load Packages -------------------------------------------------------
 
-packages<- c("tidyverse", "sf", "terra", "tidyr", "tidyterra", "ggplot2", "dplyr")
+packages<- c("tidyverse", "sf", "terra", "tidyr", "tidyterra", "ggplot2", "dplyr", "purrr")
 pacman::p_load(packages, character.only = TRUE); rm(packages)
 
 
@@ -38,18 +38,18 @@ uds <- make_UDs(annual_dens_norm)
 
 plot(uds[["SCMU-GUMU-CRMU_annual"]])
 
-pdf("~/Downloads/ud_50_95.pdf", width = 6.5, height = 9)
-for (i in 1:nlyr(uds)) {
-  plot(uds[[i]], main = names(uds)[i])
-}
-dev.off()
+# pdf("~/Downloads/ud_50_95_testvers.pdf", width = 6.5, height = 9)
+# for (i in 1:nlyr(uds)) {
+#   plot(uds[[i]], main = names(uds)[i])
+# }
+# dev.off()
+
+uds_fourclass <- make_UDs_fourclass(annual_dens_norm)
+
+plot(uds_fourclass[["ANMU_annual"]])
 
 
-
-
-
-#OLD SCRATCH FROM LAST YEAR'S VERSION.
-# Load state outlines -----------------------------------------------------------
+# Part 4: make pngs -------------------------------------------------------
 
 #loading in the states outlines and making the projection match the density data
 states1 <- vect("data/map_extras/cb_2018_us_state_20m/cb_2018_us_state_20m.shp")
@@ -61,132 +61,77 @@ plot(west)
 
 crs <- "+proj=omerc +lat_0=39 +lonc=-125 +alpha=75 +gamma=75 +k=0.9996 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs" #this is the coordinate system for the density data  
 states <- project(west, crs)
-plot(states)
 
 
-# test LAAL map -----------------------------------------------------------
+#bin cells into 50%, 95%, 100%
+uds <- make_UDs(annual_dens_norm)
 
-LAALw <- rast("data/raw_data/densities/LAAL_winter_predicted_density.tif")
-LAALsp <- rast("data/raw_data/densities/LAAL_spring_predicted_density.tif")
-
-#combining the seasons
-x <- c(LAALw, LAALsp)
-LAAL_annual <- app(x, sum)
-
-#this is making a new layer of the proportion of total density
-LAAL <- LAAL_annual %>%
-  mutate(newcol = sum/(minmax(LAAL_annual)[2])) %>% #each density/max value
-  rename(proportion = newcol)
-LAAL
-
-max(LAAL_annual) #this is how to get the value that goes into the legend 
-
-#plot
-max_val <- global(LAAL_annual, "max", na.rm = TRUE)[1,1]  # Extracts the actual max value
-
-p <- ggplot()+
-  geom_spatraster(data = LAAL, na.rm = TRUE, aes(fill = proportion))+
-  geom_spatvector(data=states, color = "#ffffff", fill = "#8290AB")+
-  scale_fill_continuous(na.value = "transparent") +  # Make NA values transparent
-  theme(axis.text = element_text(size = 20, color = "#ffffff")) +
-  theme_minimal()+
-  labs(
-    title = "Annual Laysan Albatross \n Predicted Density",
-    fill = paste0("Proportion of max density\n(", round(max_val, 3), " individuals/km^2)")
-  ) +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 10, face = "bold"),  # Center & style title
-    legend.title = element_text(hjust = 0.5, size = 10) 
-  )
-
-p +
-  theme(
-    panel.background = element_rect(fill='transparent'), #transparent panel bg
-    plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
-    panel.grid.major = element_blank(), #remove major gridlines
-    panel.grid.minor = element_blank(), #remove minor gridlines
-    legend.background = element_rect(fill='transparent'), #transparent legend bg
-    legend.box.background = element_rect(fill='transparent') #transparent legend panel
-  )
+uds_list <- lapply(seq_len(nlyr(uds)), function(i) uds[[i]])
+names(uds_list) <- names(uds)
 
 
-# Loop through to make all maps -------------------------------------------
-
-#set up a list to loop through just the species codes/groups
-birdcodes <- list.files("data/raw_data/densities") #make a list of all the file names
-birdcodes <- regmatches(birdcodes, regexpr("[^_]+", birdcodes)) #Getting just the species codes - that operator is saying to extract everything up to the first underscore 
-cleancodes <- birdcodes[!duplicated(birdcodes)] #make a list without duplicates
-
-#loop!
-for(i in cleancodes){
-  print(i)    #tracker to show progress
-  ##load in and combine the seasons for each species
-  rastlist <- list.files("data/raw_data/densities", pattern = i, all.files = TRUE, full.names = FALSE) #make a list of the file names for a single species 
-  allrasters <- rast(paste("data/raw_data/densities", rastlist, sep = "/")) #load in all the rasters for the species 
-  annualrast <- app(allrasters, sum) #sum the seasons to create a total raster
-  bin_labels <- c("<1%", "1-10%", "10-25%", "25-50%", ">50%")
-  propannual <- annualrast %>%
-    mutate(proportion = sum/(minmax(annualrast)[2]), #each density/max value
-           prop_bin = cut(proportion, 
-                          c(0, 0.01, 0.1, 0.25, 0.5, 1),
-                          labels = bin_labels ))
-  #plot
-  dens_pal <- rev(RColorBrewer::brewer.pal(n=7, "RdYlBu"))[-(1:2)]
-  names(dens_pal) <- bin_labels
-  # max_val <- global(annualrast, "max", na.rm = TRUE)[1,1]  # Extracts the actual max value
-  p <- ggplot()+
-    geom_spatraster(data = propannual, na.rm = TRUE, aes(fill = prop_bin))+
-    geom_spatvector(data=states, color = "#ffffff", fill = "#8290AB")+
-    # scale_fill_continuous(na.value = "transparent") +  # Make NA values transparent
-    scale_fill_manual(values = dens_pal, na.value = "transparent", na.translate = FALSE) +
-    theme(axis.text = element_text(size = 20, color = "#ffffff")) +
-    theme_minimal()+
-    labs(
-      title = paste0("Annual ", i, " Predicted Density"),
-      fill = paste0("Percentage of maximum \n density/km^2")
-    ) +
-    theme(
-      plot.title = element_text(hjust = 0.5, size = 10, face = "bold"),  # Center & style title
-      legend.title = element_text(hjust = 0.5, size = 10) 
+walk2(
+  uds_list,
+  names(uds_list),
+  function(r, nm) {
+    
+    speciescode <- sub("_annual.*$", "", nm)
+    
+    ggsave(
+      filename = file.path(
+        "reports/images",
+        paste0(speciescode, "_annual_ref_ud.png")
+      ),
+      plot = plot_ud(r, speciescode, states),
+      width = 10.5,
+      height = 8,
+      dpi = 400,
+      bg = "transparent"
     )
-  
-  p <- p +
-    theme(
-      panel.background = element_rect(fill='transparent'), #transparent panel bg
-      plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
-      panel.grid.major = element_blank(), #remove major gridlines
-      panel.grid.minor = element_blank(), #remove minor gridlines
-      legend.background = element_rect(fill='transparent'), #transparent legend bg
-      legend.box.background = element_rect(fill='transparent') #transparent legend panel
-    )
-  # Save the plot
-  ggsave(
-    filename = paste0("reports/images/", i, "_density_map_binned.png"),  # Save one level up
-    plot = p,
-    width = 10.5, height = 8, dpi = 400  # Adjust size and resolution as needed
-  )
-}
-
-Did you read anything today? What did you get from it?
-
-
-What non-thesis work did you do today?
+  }
+)
 
 
 
-What non-work took up room in your work day today? 
-
-
-What went well? What could have gone better?
-
-
-What are your goals for tomorrow?
 
 
 
-What are you feeling excited about?
+#OLD
 
-
-What’s weighing on your mind?
-
-
+# 
+# ud_cols <- c(
+#   "0.5"  = "#D73027",  # red
+#   "0.95" = "#FEE08B",  # yellow
+#   "1"    = "#91BFDB"   # light blue
+# )
+# 
+# ud_labs <- c(
+#   "0.5"  = "50% core area",
+#   "0.95" = "95% area"
+# )
+# 
+# uds_list <- lapply(seq_len(nlyr(uds)), function(i) uds[[i]])
+# names(uds_list) <- names(uds)
+# 
+# walk2(
+#   uds_list,
+#   names(uds_list),
+#   function(r, nm) {
+#     
+#     speciescode <- sub("_annual.*$", "", nm)
+#     
+#     ggsave(
+#       filename = file.path(
+#         "reports/images",
+#         paste0(speciescode, "_annual_ref_ud.png")
+#       ),
+#       plot = plot_ud(r, speciescode, states),
+#       width = 10.5,
+#       height = 8,
+#       dpi = 400,
+#       bg = "transparent"
+#     )
+#   }
+# )
+# 
+# 
