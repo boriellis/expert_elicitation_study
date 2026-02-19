@@ -21,9 +21,9 @@ The flight heights of seabirds are becoming increasingly relevant as offshore wi
 
 **For this portion of the elicitation workshop, please consider the following scenario:**
 
-*Our team is estimating seabird vulnerability to collision with offshore wind energy facilities planned off the northeastern continental United States. To inform this effort, we’ve compiled flight height data for seabirds occurring in the North Atlantic by collating results from two vessel-based survey studies: one conducted in the North Sea off the coast of the Netherlands (Leopold et al., 2004) and one in Rhode Island Sound (Paton et al., 2010). In both studies, observed flight heights were recorded in discrete altitudinal bands above sea level. The percentage of individuals observed in each band is used as a proxy for the percentage of time a species spends flying within that band. Our metric of interest is the zone between 25 and 125 m above sea level, as this range overlaps the rotor-swept zone of offshore wind turbines and is therefore relevant to collision sensitivity.*
+*Our team is estimating seabird vulnerability to collision with offshore wind energy facilities planned off the northeastern continental United States. To inform this effort, we’ve compiled flight height data for seabirds occurring in the North Atlantic by collating results from two vessel-based survey studies: one conducted in the North Sea off the coast of the Netherlands (Leopold et al., 2004) and one in Rhode Island Sound (Paton et al., 2010). In both studies, observed flight heights were recorded in discrete altitudinal bands above sea level. The percentage of individuals observed in each band is used as a proxy for the percentage of time a species spends flying within that band. Our metric of interest is the zone between 25 and 125 m above sea level, as this range overlaps the rotor-swept zone of the planned offshore wind turbines and is therefore relevant to collision sensitivity.*
 
-*Six seabird species of interest were not observed in sufficient numbers in these surveys for flight height data to be reported. We are therefore asking for your estimates of the percentage of time these species spend flying between 25 and 125 m above sea level, based on your understanding of their biology and flight behavior. To ensure a common baseline of information between expert respondents, we have compiled the most relevant available information on flight heights for these species, or for closely related species when species-specific data were unavailable. Please review this background information before providing your responses.*
+*Six seabird species of interest were not observed in sufficient numbers in these surveys for flight height data to be reported. We are therefore asking for your estimates of the percentage of time these species spend flying between 25 and 125 m above sea level, based on your understanding of their biology and flight behavior. To ensure a common baseline of information between expert respondents, we have compiled the most relevant available information on flight heights for these species, or for closely related species when species-specific data were unavailable. Please review this background information before providing your responses. Note that as offshore wind turbine size differs between facilities, the flight heights are reported in a number of different formats. We summarize the results here using the same formats are the original sources, including for rotor-swept zones with 20, 25, and 30m air gaps (minimum height of the turbine blades above the sea), and estimates of mean flight height.*
 
 We recognize that some participants may already be familiar with the results of the reference study. This does not preclude participation; however, to reduce the influence of potential past exposure to the blinded data on your responses, **please refrain from direct review of the reference datasets we’re using for this portion of the study directly when reviewing this dossier and providing your survey responses.**
 
@@ -34,120 +34,143 @@ We recognize that some participants may already be familiar with the results of 
 ## **Surf Scoter**
 
 |  |  |  |  |  |
-|--------------|--------------|--------------|--------------|--------------|
-| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) |
-| Common Scoter | 1.0 \[\<0.1-17.0\]^1^ |  |  |  |
-| Common Scoter | 1.9 \[0.1 - 10.9\]^2^ |  |  |  |
-| Common Scoter | 0.2^3^ |  |  |  |
-| Common Scoter |  | 0.75^4^ |  |  |
-| Sea duck spp. |  |  |  | 18.5 ± 19.0^5^ |
+|---------------|---------------|---------------|---------------|---------------|
+| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) ± SD |
+| Common Scoter | 1.0 \[\<0.1-17.0\][^1] |  |  |  |
+| Common Scoter | 1.9 \[0.1 - 10.9\][^2] |  |  |  |
+| Common Scoter | 0.2[^3] |  |  |  |
+| Common Scoter |  | 0.75[^4] |  |  |
+| Sea duck spp. |  |  |  | 18.5 ± 19.0[^5] |
 
-^1^Cook et al., 2012: Percent time in rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
+[^1]: Cook et al., 2012: Percent time in a 20m-150m rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
 
-^2^Johnston et al,. 2014: Percent time in rotor-swept zone was recalculated using an improved modeling design on the same data as used by Cook et al., 2012.
+[^2]: Johnston et al,. 2014: Percent time in a 20m-120m rotor-swept zone was calculated using an improved modeling design on the same data as used by Cook et al., 2012.
 
-^3^PMSS, 2007: Reported as percent individuals observed flying within rotor-swept zone during visual at-sea surveys in UK waters
+[^3]: PMSS, 2007: Reported as percent individuals observed flying \>20m above sea level during visual at-sea surveys in UK waters
 
-^4^Leopold et al., 2004: Reported as percent individuals observed flying within rotor-swept zone during visual at-sea surveys in the North Sea.
+[^4]: Leopold et al., 2004: Reported as percent individuals observed flying within a 25m-100m rotor-swept zone during visual at-sea surveys in the North Sea.
 
-^5^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands \
+[^5]: Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands 
+
+*Hover over the footnotes to see information on data sources. \
+*
 
 ## **Common Murre**
 
 |  |  |  |  |  |
-|--------------|--------------|--------------|--------------|--------------|
-| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) |
-| Common Murre | 0.01 \[\<0.01-3.9\]^1^ |  |  |  |
-| Common Murre | 0.4 \[0.0 - 10.2\]^2^ |  |  |  |
-| Common Murre | 5.4^3^ |  |  |  |
-| Alcid spp. |  |  |  | 11.9 ± 4.4^4^ |
+|---------------|---------------|---------------|---------------|---------------|
+| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) ± SD |
+| Common Murre | 0.01 \[\<0.01-3.9\][^6] |  |  |  |
+| Common Murre | 0.4 \[0.0 - 10.2\][^7] |  |  |  |
+| Common Murre | 5.4[^8] |  |  |  |
+| Alcid spp. |  |  |  | 11.9 ± 4.4[^9] |
 
-^1^Cook et al., 2012: Percent time in rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
+[^6]: Cook et al., 2012: Percent time in a 20m-150m rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
 
-^2^Johnston et al,. 2014: Percent time in rotor-swept zone was recalculated using an improved modeling design on the same data as used by Cook et al., 2012.
+[^7]: Johnston et al,. 2014: Percent time in a 20m-120m rotor-swept zone was calculated using an improved modeling design on the same data as used by Cook et al., 2012.
 
-^3^PMSS, 2007: Reported as percent individuals observed flying within rotor-swept zone during visual at-sea surveys in UK waters
+[^8]: PMSS, 2007: Reported as percent individuals observed flying \>20m above sea level during visual at-sea surveys in UK waters
 
-^4^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands
+[^9]: Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands
+
+*Hover over the footnotes to see information on data sources. \
+*
 
 ## **Herring Gull**
 
 |  |  |  |  |  |
-|--------------|--------------|--------------|--------------|--------------|
-| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) |
-| Herring Gull | 28.4 \[15.9-48.1\]^1^ |  |  |  |
-| Herring Gull | 31.9 \[25.2 - 41.2\]^2^ |  |  |  |
-| Herring Gull | 36.60^3^ |  |  |  |
-| Herring Gull |  | 73^4^ |  |  |
-| Herring Gull |  |  | 54.1^5^ |  |
-| Gull spp. |  |  |  | 36.8 ± 33.3^6^ |
+|---------------|---------------|---------------|---------------|---------------|
+| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) ± SD |
+| Herring Gull | 28.4 \[15.9-48.1\][^10] |  |  |  |
+| Herring Gull | 31.9 \[25.2 - 41.2\][^11] |  |  |  |
+| Herring Gull | 36.60[^12] |  |  |  |
+| Herring Gull |  | 73[^13] |  |  |
+| Herring Gull |  |  | 54.1[^14] |  |
+| Gull spp. |  |  |  | 36.8 ± 33.3[^15] |
 
-^1^Cook et al., 2012: Percent time in rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
+[^10]: Cook et al., 2012: Percent time in a 20m-150m rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
 
-^2^Johnston et al,. 2014: Percent time in rotor-swept zone was recalculated using an improved modeling design on the same data as used by Cook et al., 2012. ^3^PMSS, 2007: Reported as percent individuals observed flying within rotor-swept zone during visual at-sea surveys in UK waters
+[^11]: Johnston et al,. 2014: Percent time in a 20m-120m rotor-swept zone was calculated using an improved modeling design on the same data as used by Cook et al., 2012.
 
-^4^Skov et. al., 2018: Observers used rangefinders from an UK offshore wind platform
+[^12]: PMSS, 2007: Reported as percent individuals observed flying \>20m above sea level during visual at-sea surveys in UK waters
 
-^5^Borkenhagen et al., 2018: Observers used rangefinders during at-sea surveys in the German North Sea 
+[^13]: Skov et. al., 2018: Observers used rangefinders from an UK offshore wind platform to estimate percent individuals flying above \>25m above sea level.
 
-^6^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands 
+[^14]: Borkenhagen et al., 2018: Observers used rangefinders during at-sea surveys in the German North Sea to estimate perfect time in a 30m-150m rotor-swept zone.
+
+[^15]: Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands
+
+*Hover over the footnotes to see information on data sources. \
+*
 
 ## **Common Loon**
 
 |  |  |  |  |  |
-|--------------|--------------|--------------|--------------|--------------|
-| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) |
-| Black-throated Loon | 0.1 \[0.1-30.5\]^1^ |  |  |  |
-| Black-throated Loon | 7.3 \[0.0 - 39.7\]^2^ |  |  |  |
-| Red-throated Loon | 2.0 \[0.1-22.4\]^1^ |  |  |  |
-| Red-throated Loon | 1.0 \[0.3 - 9.6\]^2^ |  |  |  |
-| Loon spp. |  |  | 13.0^3^ |  |
-| Loon spp. |  |  |  | 19.0 ± 16.1^4^ |
+|---------------|---------------|---------------|---------------|---------------|
+| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) ± SD |
+| Black-throated Loon | 0.1 \[0.1-30.5\][^16] |  |  |  |
+| Black-throated Loon | 7.3 \[0.0 - 39.7\][^17] |  |  |  |
+| Red-throated Loon | 2.0 \[0.1-22.4\][^18] |  |  |  |
+| Red-throated Loon | 1.0 \[0.3 - 9.6\][^19] |  |  |  |
+| Loon spp. |  |  | 13.0[^20] |  |
+| Loon spp. |  |  |  | 19.0 ± 16.1[^21] |
 
-\
-^1^Cook et al., 2012: Percent time in rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
+[^16]: Cook et al., 2012: Percent time in a 20m-150m rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
 
-^2^Johnston et al,. 2014: Percent time in rotor-swept zone was recalculated using an improved modeling design on the same data as used by Cook et al., 2012.
+[^17]: Johnston et al,. 2014: Percent time in a 20m-120m rotor-swept zone was calculated using an improved modeling design on the same data as used by Cook et al., 2012.
 
-^3^Borkenhagen et al., 2018: Observers used rangefinders during at-sea surveys in the German North Sea
+[^18]: Cook et al., 2012: Percent time in a 20m-150m rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
 
-^4^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands 
+[^19]: Johnston et al,. 2014: Percent time in a 20m-120m rotor-swept zone was calculated using an improved modeling design on the same data as used by Cook et al., 2012.
+
+[^20]: PMSS, 2007: Reported as percent individuals observed flying \>20m above sea level during visual at-sea surveys in UK waters.
+
+[^21]: Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands
+
+*Hover over the footnotes to see information on data sources. \
+*
 
 ## **Northern Fulmar**
 
 |  |  |  |  |  |
-|--------------|--------------|--------------|--------------|--------------|
-| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) |
-| Northern Fulmar | 0.2 \[\<0.1 - 22.1\]^1^ |  |  |  |
-| Northern Fulmar | 1.0 \[0.0 - 9.2\]^2^ |  |  |  |
+|---------------|---------------|---------------|---------------|---------------|
+| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) ± SD |
+| Northern Fulmar | 0.2 \[\<0.1 - 22.1\][^22] |  |  |  |
+| Northern Fulmar | 1.0 \[0.0 - 9.2\][^23] |  |  |  |
 
-^1^Cook et al., 2012: Percent time in rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
+[^22]: Cook et al., 2012: Percent time in a 20m-150m rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
 
-^2^Johnston et al,. 2014: Percent time in rotor-swept zone was recalculated using an improved modeling design on the same data as used by Cook et al., 2012.
+[^23]: Johnston et al,. 2014: Percent time in a 20m-120m rotor-swept zone was calculated using an improved modeling design on the same data as used by Cook et al., 2012.
+
+*Hover over the footnotes to see information on data sources. \
+*
 
 ## **Northern Gannet**
 
 |  |  |  |  |  |
-|--------------|--------------|--------------|--------------|--------------|
-| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) |
-| Northern Gannet | 9.6 \[\<0.1-19.9\]^1^ |  |  |  |
-| Northern Gannet | 12.6 \[6.2 - 20.0\]^2^ |  |  |  |
-| Northern Gannet | 16^3^ |  |  |  |
-| Northern Gannet |  | 27^4^ |  |  |
-| Northern Gannet |  |  | 12.7^5^ |  |
-| Northern Gannet |  |  |  | 25.6 ± 15.8^6^ |
+|---------------|---------------|---------------|---------------|---------------|
+| Species | \% time in 20m air gap RSZ \[95% CI\] | \% time in 25m air gap RSZ \[95% CI\] | \% time in 30m air gap RSZ \[95% CI\] | Mean flight height (m) ± SD |
+| Northern Gannet | 9.6 \[\<0.1-19.9\][^24] |  |  |  |
+| Northern Gannet | 12.6 \[6.2 - 20.0\][^25] |  |  |  |
+| Northern Gannet | 16[^26] |  |  |  |
+| Northern Gannet |  | 27[^27] |  |  |
+| Northern Gannet |  |  | 12.7[^28] |  |
+| Northern Gannet |  |  |  | 25.6 ± 15.8[^29] |
 
-^1^Cook et al., 2012: Percent time in rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
+[^24]: Cook et al., 2012: Percent time in a 20m-150m rotor-swept zone was estimated using spline-based models fit to visual at-sea survey data from boat-based surveys in UK waters, with birds assigned to discrete altitude bands and uncertainty quantified via site-level bootstrapping.
 
-^2^Johnston et al,. 2014: Percent time in rotor-swept zone was recalculated using an improved modeling design on the same data as used by Cook et al., 2012.
+[^25]: Johnston et al,. 2014: Percent time in a 20m-120m rotor-swept zone was calculated using an improved modeling design on the same data as used by Cook et al., 2012.
 
-^3^PMSS, 2007: Reported as percent individuals observed flying within rotor-swept zone during visual at-sea surveys in UK waters
+[^26]: PMSS, 2007: Reported as percent individuals observed flying \>20m above sea level during visual at-sea surveys in UK waters.
 
-^4^Skov et. al., 2018: Observers used rangefinders from an UK offshore wind platform
+[^27]: Skov et. al., 2018: Observers used rangefinders from an UK offshore wind platform to estimate percent individuals flying above \>25m above sea level.
 
-^5^Borkenhagen et al., 2018: Observers used rangefinders during at-sea surveys in the German North Sea 
+[^28]: Borkenhagen et al., 2018: Observers used rangefinders during at-sea surveys in the German North Sea to estimate perfect time in a 30m-150m rotor-swept zone.
 
-^6^Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands
+[^29]: Krijgsveld et al., 2005: Average flight heights of flocks of species groups observed in panorama scans at an observation platform 9km off the coast of the Netherlands
+
+*Hover over the footnotes to see information on data sources. \
+*
 
 ## **Literature Cited**
 
