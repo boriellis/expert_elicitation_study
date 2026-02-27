@@ -44,9 +44,6 @@ plot(uds[["SCMU-GUMU-CRMU_annual"]])
 # }
 # dev.off()
 
-uds_fourclass <- make_UDs_fourclass(annual_dens_norm)
-
-plot(uds_fourclass[["ANMU_annual"]])
 
 
 # Part 4: make pngs -------------------------------------------------------
@@ -62,9 +59,6 @@ plot(west)
 crs <- "+proj=omerc +lat_0=39 +lonc=-125 +alpha=75 +gamma=75 +k=0.9996 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs" #this is the coordinate system for the density data  
 states <- project(west, crs)
 
-
-#bin cells into 50%, 95%, 100%
-uds <- make_UDs(annual_dens_norm)
 
 uds_list <- lapply(seq_len(nlyr(uds)), function(i) uds[[i]])
 names(uds_list) <- names(uds)
