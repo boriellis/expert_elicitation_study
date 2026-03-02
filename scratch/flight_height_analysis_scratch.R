@@ -117,9 +117,149 @@ ggplot(indirect_fh_hd, aes(expert_id, estimate)) +
 
 
 
-  
+# direct-indirect model ---------------------------------------------------
 
+# y ~ RV(E, V)
+# link(E) = sum_i { (beta_0[i] + x_i) * beta_1[i]}
+# beta_0 ~ Normal(0, sigma)
+# beta_1 ~ Dirichlet(alpha)
 
+di_df <- direct_fh_hd %>% 
+  select(species, expert_id, best) %>% 
+  left_join(actual_fh, by = "species") %>% 
+  arrange(species, expert_id)
+
+library(rstan)
+
+# Assuming your data frame is called `df`
+
+# one actual per species, preserving factor order
+actual_df <- di_df[!duplicated(di_df$species), ]
+actual_df <- actual_df[order(as.integer(factor(actual_df$species))), ]
+
+stan_data <- list(
+  N          = length(unique(di_df$species)),
+  E          = length(unique(di_df$expert_id)),
+  M          = nrow(di_df),
+  obs_id     = as.integer(factor(di_df$species)),
+  expert_id  = as.integer(factor(di_df$expert_id)),
+  fh_best    = di_df$best / 100,
+  fh_actual  = actual_df$actual / 100
+)
+
+fit <- stan(
+  file    = "scratch/di_fh.stan",
+  data    = stan_data,
+  chains  = 4,
+  iter    = 8000,
+  cores   = 4,
+  seed    = 42
+)
+
+library(posterior)
+draws <- as_draws_df(fit)
+
+# ── 1. Trace plots ────────────────────────────────────────────────────────────
+
+draws_long <- draws |>
+  select(.chain, .iteration, phi, sigma, sigma_gamma) |>
+  pivot_longer(c(phi, sigma, sigma_gamma), names_to = "parameter", values_to = "value")
+
+ggplot(draws_long, aes(x = .iteration, y = value, colour = factor(.chain))) +
+  geom_line(alpha = 0.6, linewidth = 0.3) +
+  facet_wrap(~ parameter, scales = "free_y") +
+  labs(title = "Trace plots — fixed effects", colour = "Chain") +
+  theme_minimal()
+
+# ── 2. Distribution of fixed effects ─────────────────────────────────────────
+
+fixed_long <- draws |>
+  select(phi, sigma, sigma_gamma) |>
+  pivot_longer(everything(), names_to = "parameter", values_to = "value")
+
+ggplot(fixed_long, aes(x = value)) +
+  geom_density(fill = "steelblue", alpha = 0.5) +
+  facet_wrap(~ parameter, scales = "free") +
+  labs(title = "Posterior distributions — fixed effects") +
+  theme_minimal()
+
+# ── 3. Distribution of random effects ────────────────────────────────────────
+
+# beta_0 (per-expert intercepts)
+beta0_long <- draws |>
+  select(starts_with("beta_0[")) |>
+  pivot_longer(everything(), names_to = "expert", values_to = "value") |>
+  mutate(expert = gsub("beta_0\\[|\\]", "", expert))
+
+ggplot(beta0_long, aes(x = value, y = expert)) +
+  ggdist::stat_halfeye() +
+  labs(title = "Posterior distributions — beta_0 (Beta part intercepts)", x = "value", y = "expert") +
+  xlim(-6, 6) +
+  theme_minimal()
+
+# beta_1 (Dirichlet weights — Beta part)
+beta1_long <- draws |>
+  select(starts_with("beta_1[")) |>
+  pivot_longer(everything(), names_to = "expert", values_to = "value") |>
+  mutate(expert = gsub("beta_1\\[|\\]", "", expert))
+
+ggplot(beta1_long, aes(x = value, y = expert)) +
+  ggdist::stat_halfeye() +
+  labs(title = "Posterior distributions — beta_1 (Beta part weights)", x = "value", y = "expert") +
+  xlim(0, 0.4) +
+  theme_minimal()
+
+# gamma_0 (per-expert intercepts — hurdle part)
+gamma0_long <- draws |>
+  select(starts_with("gamma_0[")) |>
+  pivot_longer(everything(), names_to = "expert", values_to = "value") |>
+  mutate(expert = gsub("gamma_0\\[|\\]", "", expert))
+
+ggplot(gamma0_long, aes(x = value, y = expert)) +
+  ggdist::stat_halfeye() +
+  labs(title = "Posterior distributions — gamma_0 (hurdle part intercepts)", x = "value", y = "expert") +
+  xlim(-3, 3) +
+  theme_minimal()
+
+# gamma_1 (Dirichlet weights — hurdle part)
+gamma1_long <- draws |>
+  select(starts_with("gamma_1[")) |>
+  pivot_longer(everything(), names_to = "expert", values_to = "value") |>
+  mutate(expert = gsub("gamma_1\\[|\\]", "", expert))
+
+ggplot(gamma1_long, aes(x = value, y = expert)) +
+  ggdist::stat_halfeye() +
+  xlim(0, 0.4) +
+  labs(title = "Posterior distributions — gamma_1 (hurdle part weights)", x = "value", y = "expert") +
+  theme_minimal()
+
+# ── 4. Predicted vs actual ────────────────────────────────────────────────────
+
+pred_draws <- draws |>
+  select(starts_with("fh_pred[")) |>
+  pivot_longer(everything(), names_to = "obs", values_to = "value") |>
+  mutate(n = as.integer(gsub("fh_pred\\[|\\]", "", obs))) |>
+  group_by(n) |>
+  summarise(
+    median = median(value),
+    lo     = quantile(value, 0.055),  # 89% credible interval
+    hi     = quantile(value, 0.945),
+    .groups = "drop"
+  )
+
+# attach actuals (same ordering as stan_data$fh_actual)
+pred_draws$actual <- stan_data$fh_actual
+
+ggplot(pred_draws, aes(x = median, y = actual)) +
+  geom_pointrange(aes(ymin = lo, ymax = hi), alpha = 0.4, linewidth = 0.4) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "firebrick") +
+  labs(
+    title    = "Predicted vs actual",
+    subtitle = "Median and 89% credible interval",
+    x        = "Predicted fh",
+    y        = "Actual fh"
+  ) +
+  theme_minimal()
 
 
 
