@@ -117,6 +117,37 @@ ggplot(indirect_fh_hd, aes(expert_id, estimate)) +
 
 
 
+
+
+# direct-direct model  ----------------------------------------------------
+
+#start by standardizing expert intervals to 90 - following hemming et al 2018
+
+direct_fh_hd_standardized <- direct_fh_hd %>% 
+  mutate(
+    lowest_90_CI = pmax(0, (best - (best-lowest)*(90/confidence))),
+    highest_90_CI = pmin(100, (best + (highest-best)*(90/confidence)))
+  )
+
+direct_fh_hd_aggregated <- direct_fh_hd_standardized %>% 
+  group_by(species) %>%
+  summarise(best_avg = mean(best, na.rm = TRUE),
+            upper_avg = mean(highest_90_CI, na.rm = TRUE),
+            lower_avg = mean(lowest_90_CI, na.rm = TRUE)
+            )
+
+
+
+
+
+ggplot(direct_fh_hd_aggregated, aes(x = species, y = best_avg)) +
+  geom_pointrange(aes(ymin = lower_avg, ymax = upper_avg)) +
+  geom_point(data = actual_fh, aes(x = species, y = actual),
+             color = "cornflowerblue", size = 3) +
+  theme_bw(14)
+
+
+
 # direct-indirect model ---------------------------------------------------
 
 # y ~ RV(E, V)
