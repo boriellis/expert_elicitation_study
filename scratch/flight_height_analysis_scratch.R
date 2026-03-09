@@ -137,14 +137,14 @@ direct_fh_hd_aggregated <- direct_fh_hd_standardized %>%
             )
 
 
-
-
-
 ggplot(direct_fh_hd_aggregated, aes(x = species, y = best_avg)) +
   geom_pointrange(aes(ymin = lower_avg, ymax = upper_avg)) +
   geom_point(data = actual_fh, aes(x = species, y = actual),
              color = "cornflowerblue", size = 3) +
   theme_bw(14)
+
+
+
 
 
 
@@ -162,27 +162,27 @@ di_df <- direct_fh_hd %>%
 
 library(rstan)
 
-# Assuming your data frame is called `df`
-
-# one actual per species, preserving factor order
-actual_df <- di_df[!duplicated(di_df$species), ]
-actual_df <- actual_df[order(as.integer(factor(actual_df$species))), ]
+new_zero <- 0.001
+di_wide <- di_df %>% 
+  pivot_wider(names_from = expert_id,
+              values_from = best) %>% 
+  mutate(actual = pmax(actual / 100, new_zero))
+di_mtx <- as.matrix(select(di_wide, -(1:2))) / 100
+# slightly offset 0's
+di_mtx[di_mtx == 0] <- new_zero
 
 stan_data <- list(
-  N          = length(unique(di_df$species)),
-  E          = length(unique(di_df$expert_id)),
-  M          = nrow(di_df),
-  obs_id     = as.integer(factor(di_df$species)),
-  expert_id  = as.integer(factor(di_df$expert_id)),
-  fh_best    = di_df$best / 100,
-  fh_actual  = actual_df$actual / 100
+  E = ncol(di_mtx),
+  M = nrow(di_mtx),
+  X = di_mtx,
+  Y = pmax(di_wide$actual / 100, new_zero)
 )
 
 fit <- stan(
   file    = "scratch/di_fh.stan",
   data    = stan_data,
   chains  = 4,
-  iter    = 8000,
+  iter    = 10000,
   cores   = 4,
   seed    = 42
 )
@@ -190,108 +190,82 @@ fit <- stan(
 library(posterior)
 draws <- as_draws_df(fit)
 
-# ── 1. Trace plots ────────────────────────────────────────────────────────────
-
-draws_long <- draws |>
-  select(.chain, .iteration, phi, sigma, sigma_gamma) |>
-  pivot_longer(c(phi, sigma, sigma_gamma), names_to = "parameter", values_to = "value")
-
-ggplot(draws_long, aes(x = .iteration, y = value, colour = factor(.chain))) +
-  geom_line(alpha = 0.6, linewidth = 0.3) +
-  facet_wrap(~ parameter, scales = "free_y") +
-  labs(title = "Trace plots — fixed effects", colour = "Chain") +
+# Posterior distribution of phi (the dispersion parameter)
+ggplot(draws, aes(x = phi)) +
+  geom_density() +
   theme_minimal()
 
-# ── 2. Distribution of fixed effects ─────────────────────────────────────────
-
-fixed_long <- draws |>
-  select(phi, sigma, sigma_gamma) |>
-  pivot_longer(everything(), names_to = "parameter", values_to = "value")
-
-ggplot(fixed_long, aes(x = value)) +
-  geom_density(fill = "steelblue", alpha = 0.5) +
-  facet_wrap(~ parameter, scales = "free") +
-  labs(title = "Posterior distributions — fixed effects") +
-  theme_minimal()
-
-# ── 3. Distribution of random effects ────────────────────────────────────────
-
-# beta_0 (per-expert intercepts)
-beta0_long <- draws |>
-  select(starts_with("beta_0[")) |>
-  pivot_longer(everything(), names_to = "expert", values_to = "value") |>
-  mutate(expert = gsub("beta_0\\[|\\]", "", expert))
-
-ggplot(beta0_long, aes(x = value, y = expert)) +
+# Posterior distribution of beta
+draws %>% 
+  select(starts_with("beta")) %>% 
+  pivot_longer(everything(), names_to = "expert", values_to = "weight") %>% 
+  mutate(expert = fct_reorder(expert, weight)) %>% 
+  ggplot(aes(weight, expert)) +
   ggdist::stat_halfeye() +
-  labs(title = "Posterior distributions — beta_0 (Beta part intercepts)", x = "value", y = "expert") +
-  xlim(-6, 6) +
   theme_minimal()
 
-# beta_1 (Dirichlet weights — Beta part)
-beta1_long <- draws |>
-  select(starts_with("beta_1[")) |>
-  pivot_longer(everything(), names_to = "expert", values_to = "value") |>
-  mutate(expert = gsub("beta_1\\[|\\]", "", expert))
-
-ggplot(beta1_long, aes(x = value, y = expert)) +
+# Posterior distribution of flight height
+# MAX NEXT TIME
+# THIS IS THE CI OF THE MEAN
+# WE WANT THE PI OF THE ESTIMATE
+expert_mean <- di_df %>% 
+  group_by(species) %>% 
+  summarize(mean_best = pmax(mean(best) / 100, new_zero))
+fh_post <- draws %>% 
+  select(starts_with("mu[")) %>% 
+  pivot_longer(everything(), 
+               names_to = "species", 
+               values_to = "estimate") %>% 
+  mutate(species = factor(species, labels = di_wide$species),
+         species = fct_reorder(species, estimate))
+ggplot(fh_post, aes(estimate, species)) +
   ggdist::stat_halfeye() +
-  labs(title = "Posterior distributions — beta_1 (Beta part weights)", x = "value", y = "expert") +
-  xlim(0, 0.4) +
+  geom_point(aes(x = actual), 
+             mutate(di_wide, species = factor(species, levels = levels(fh_post$species))),
+             color = "cornflowerblue") +
+  geom_point(aes(x = mean_best),
+             expert_mean,
+             color = "firebrick") +
+  facet_grid(. ~ species, scales = "free") +
   theme_minimal()
 
-# gamma_0 (per-expert intercepts — hurdle part)
-gamma0_long <- draws |>
-  select(starts_with("gamma_0[")) |>
-  pivot_longer(everything(), names_to = "expert", values_to = "value") |>
-  mutate(expert = gsub("gamma_0\\[|\\]", "", expert))
 
-ggplot(gamma0_long, aes(x = value, y = expert)) +
-  ggdist::stat_halfeye() +
-  labs(title = "Posterior distributions — gamma_0 (hurdle part intercepts)", x = "value", y = "expert") +
-  xlim(-3, 3) +
-  theme_minimal()
-
-# gamma_1 (Dirichlet weights — hurdle part)
-gamma1_long <- draws |>
-  select(starts_with("gamma_1[")) |>
-  pivot_longer(everything(), names_to = "expert", values_to = "value") |>
-  mutate(expert = gsub("gamma_1\\[|\\]", "", expert))
-
-ggplot(gamma1_long, aes(x = value, y = expert)) +
-  ggdist::stat_halfeye() +
-  xlim(0, 0.4) +
-  labs(title = "Posterior distributions — gamma_1 (hurdle part weights)", x = "value", y = "expert") +
-  theme_minimal()
-
-# ── 4. Predicted vs actual ────────────────────────────────────────────────────
-
-pred_draws <- draws |>
-  select(starts_with("fh_pred[")) |>
-  pivot_longer(everything(), names_to = "obs", values_to = "value") |>
-  mutate(n = as.integer(gsub("fh_pred\\[|\\]", "", obs))) |>
-  group_by(n) |>
-  summarise(
-    median = median(value),
-    lo     = quantile(value, 0.055),  # 89% credible interval
-    hi     = quantile(value, 0.945),
-    .groups = "drop"
+## LOO (leave one out)
+fit_fh_loo <- function(sp) {
+  new_zero <- 0.001
+  di_wide <- di_df %>% 
+    filter(species != sp) %>% 
+    pivot_wider(names_from = expert_id,
+                values_from = best) %>% 
+    mutate(actual = pmax(actual / 100, new_zero))
+  di_mtx <- as.matrix(select(di_wide, -(1:2))) / 100
+  # slightly offset 0's
+  di_mtx[di_mtx == 0] <- new_zero
+  
+  stan_data <- list(
+    E = ncol(di_mtx),
+    M = nrow(di_mtx),
+    X = di_mtx,
+    Y = pmax(di_wide$actual / 100, new_zero)
   )
-
-# attach actuals (same ordering as stan_data$fh_actual)
-pred_draws$actual <- stan_data$fh_actual
-
-ggplot(pred_draws, aes(x = median, y = actual)) +
-  geom_pointrange(aes(ymin = lo, ymax = hi), alpha = 0.4, linewidth = 0.4) +
-  geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "firebrick") +
-  labs(
-    title    = "Predicted vs actual",
-    subtitle = "Median and 89% credible interval",
-    x        = "Predicted fh",
-    y        = "Actual fh"
-  ) +
-  theme_minimal()
-
-
-
+  
+  fit <- stan(
+    file    = "scratch/di_fh.stan",
+    data    = stan_data,
+    chains  = 4,
+    iter    = 10000,
+    cores   = 4,
+    seed    = 42
+  )
+  
+  fit
+}
+loo_herg <- fit_fh_loo("Herring Gull")
+loo_predict <- function(loo_mod, expert_best) {
+  loo_draws <- as_draws_df(loo_mod)
+  loo_beta <- as.matrix(select(loo_draws, starts_with("beta")))
+  loo_mu_logit <- loo_beta
+}
+herg_draws <- as_draws_df(loo_herg)
+herg_beta <- as.matrix(select(herg_draws, starts_with("beta")))
 
