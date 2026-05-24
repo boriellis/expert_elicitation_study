@@ -29,7 +29,9 @@ actual_fh <- tibble(
 
 
 # flight height direct ----------------------------------------------------
-
+#this shows the self reported best estimates and confidence bounds per species and expert
+#plots it against the actual value in the dataset 
+#also colored by how confident the expert said they were in their responses
 
 questions_dir <- c("lowest", "highest", "best", "confidence", "notes")
 
@@ -65,6 +67,8 @@ ggplot(direct_fh_hd, aes(expert_id, best)) +
 
 
 # flight height indirect --------------------------------------------------
+#this is by sp and expert, the point estimate that the indirect model produces 
+#plotted against the actual value
 
 
 ref_ind <- c("SCAUP SP [54.5]", "COEI [0.6]", "WWSC [0.0]", "COSC [0.8]", "BLSC [0.0]", "RAZO [0.0]", "DOVE [0.0]", "BLKI [8.9]", "LAGU [4.2]", "SMALL GULL SP [9.7]", "GBBG [9.5]", "COTE-ARTE [1.2]", "SATE [4.5]", "RTLO-BTLO [12.2]", "WISP [0.0]", "COSH [0.0]", "GRSH [0.0]", "GRCO [7.3]", "notes")
@@ -120,6 +124,8 @@ ggplot(indirect_fh_hd, aes(expert_id, estimate)) +
 
 
 # direct-direct model  ----------------------------------------------------
+#now we're actually going to see how well the direct direct method does to get close to the real values??
+#this chunk just aggregates the expert responses to a single estimate with confidence across experts and then plots that against the actual value. 
 
 #start by standardizing expert intervals to 90 - following hemming et al 2018
 
@@ -128,6 +134,8 @@ direct_fh_hd_standardized <- direct_fh_hd %>%
     lowest_90_CI = pmax(0, (best - (best-lowest)*(90/confidence))),
     highest_90_CI = pmin(100, (best + (highest-best)*(90/confidence)))
   )
+
+#then, calculate the arithmetic means of the upper, best, and lower values to get the new means and CIs (following Hemming et al)
 
 direct_fh_hd_aggregated <- direct_fh_hd_standardized %>% 
   group_by(species) %>%
@@ -165,15 +173,15 @@ library(rstan)
 new_zero <- 0.001
 di_wide <- di_df %>% 
   pivot_wider(names_from = expert_id,
-              values_from = best) %>% 
+              values_from = best) %>% #since it's direct-indirect we're only using the best column in this model
   mutate(actual = pmax(actual / 100, new_zero))
-di_mtx <- as.matrix(select(di_wide, -(1:2))) / 100
+di_mtx <- as.matrix(select(di_wide, -(1:2))) / 100 #this is now the matrix we feed the model
 # slightly offset 0's
 di_mtx[di_mtx == 0] <- new_zero
 
 stan_data <- list(
-  E = ncol(di_mtx),
-  M = nrow(di_mtx),
+  E = ncol(di_mtx), #experts is number columns
+  M = nrow(di_mtx), #species is number of rows
   X = di_mtx,
   Y = pmax(di_wide$actual / 100, new_zero)
 )
@@ -193,7 +201,7 @@ draws <- as_draws_df(fit)
 # Posterior distribution of phi (the dispersion parameter)
 ggplot(draws, aes(x = phi)) +
   geom_density() +
-  theme_minimal()
+  theme_minimal() #the plot of this is reasonable, says max 
 
 # Posterior distribution of beta
 draws %>% 
@@ -204,7 +212,7 @@ draws %>%
   ggdist::stat_halfeye() +
   theme_minimal()
 
-# Posterior distribution of flight height
+# Posterior distribution of flight height (not leave one out yet, this is the whole model - if we train the model on all the data can it predict within itself - we've already given it the right answer)
 # MAX NEXT TIME
 # THIS IS THE CI OF THE MEAN
 # WE WANT THE PI OF THE ESTIMATE
