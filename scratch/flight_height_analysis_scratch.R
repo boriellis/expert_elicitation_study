@@ -238,6 +238,10 @@ ggplot(fh_post, aes(estimate, species)) +
   theme_minimal()
 
 
+
+#this is where max was starting to do LOO
+
+
 ## LOO (leave one out)
 fit_fh_loo <- function(sp) {
   new_zero <- 0.001
@@ -268,12 +272,283 @@ fit_fh_loo <- function(sp) {
   
   fit
 }
-loo_herg <- fit_fh_loo("Herring Gull")
+
+#commenting out what max wrote:
+
+# loo_herg <- fit_fh_loo("Herring Gull")
+# loo_predict <- function(loo_mod, expert_best) {
+#   loo_draws <- as_draws_df(loo_mod)
+#   loo_beta <- as.matrix(select(loo_draws, starts_with("beta")))
+#   loo_mu_logit <- loo_beta
+# }
+# herg_draws <- as_draws_df(loo_herg)
+# herg_beta <- as.matrix(select(herg_draws, starts_with("beta")))
+
+
+#now here's claude's help completing it:
 loo_predict <- function(loo_mod, expert_best) {
+  # expert_best: named vector of expert estimates for the held-out species,
+  # in the same expert order as the model was fit, scaled to [0,1]
+  
   loo_draws <- as_draws_df(loo_mod)
-  loo_beta <- as.matrix(select(loo_draws, starts_with("beta")))
-  loo_mu_logit <- loo_beta
+  
+  beta_draws <- as.matrix(select(loo_draws, starts_with("beta")))
+  phi_draws   <- loo_draws$phi
+  
+  n_draws <- nrow(beta_draws)
+  
+  # compute mu for the held-out species across all posterior draws
+  mu_logit_draws <- beta_draws %*% qlogis(expert_best)  # [n_draws x 1]
+  mu_draws       <- plogis(mu_logit_draws)              # inv_logit
+  
+  # draw from the Beta likelihood for each posterior sample
+  Y_pred <- rbeta(
+    n      = n_draws,
+    shape1 = mu_draws * phi_draws,
+    shape2 = (1 - mu_draws) * phi_draws
+  )
+  
+  list(
+    Y_pred  = Y_pred,
+    median  = median(Y_pred),
+    lower90 = quantile(Y_pred, 0.05),
+    upper90 = quantile(Y_pred, 0.95)
+  )
 }
-herg_draws <- as_draws_df(loo_herg)
-herg_beta <- as.matrix(select(herg_draws, starts_with("beta")))
+
+
+#loop over species and get results:
+library(purrr)
+
+loo_fits <- setNames(
+  map(species, fit_fh_loo),
+  species
+)
+
+loo_results <- map_dfr(species, function(sp) {
+  # expert estimates for the held-out species, scaled to [0,1]
+  expert_best <- di_df %>%
+    filter(species == sp) %>%
+    arrange(expert_id) %>%
+    mutate(best = pmax(best / 100, new_zero)) %>%
+    pull(best)
+  
+  pred <- loo_predict(loo_fits[[sp]], expert_best)
+  
+  tibble(
+    species = sp,
+    actual  = actual_fh$actual[actual_fh$species == sp] / 100,
+    median  = pred$median,
+    lower90 = pred$lower90,
+    upper90 = pred$upper90
+  )
+}) %>%
+  mutate(contains_actual = actual >= lower90 & actual <= upper90)
+
+# plot
+ggplot(loo_results, aes(x = species, y = median)) +
+  geom_pointrange(aes(ymin = lower90, ymax = upper90,
+                      colour = contains_actual)) +
+  geom_point(aes(y = actual), colour = "cornflowerblue", size = 3) +
+  scale_colour_manual(values = c("TRUE" = "black", "FALSE" = "firebrick")) +
+  labs(
+    title    = "LOO posterior predictive intervals vs actual flight height",
+    subtitle = "90% prediction interval; blue = actual; red interval = missed",
+    y        = "Flight height (proportion)",
+    colour   = "Contains actual"
+  ) +
+  theme_bw(14)
+
+
+
+
+#indirect-indirect model (using the same LOO approach as above)
+
+ii_df <- indirect_fh_hd
+
+fit_fh_loo_indirect <- function(sp) {
+  new_zero <- 0.001
+  
+  ii_wide <- indirect_fh_hd %>%
+    left_join(actual_fh, by = "species") %>%
+    filter(species != sp) %>%
+    select(species, expert_id, estimate, actual) %>%   # <-- add this
+    pivot_wider(names_from = expert_id, values_from = estimate) %>%
+    mutate(actual = pmax(actual / 100, new_zero))
+  
+  ii_mtx <- as.matrix(select(ii_wide, -(1:2))) / 100
+  ii_mtx[ii_mtx == 0] <- new_zero
+  
+  stan_data <- list(
+    E = ncol(ii_mtx),
+    M = nrow(ii_mtx),
+    X = ii_mtx,
+    Y = pmax(ii_wide$actual / 100, new_zero)
+  )
+  
+  stan(
+    file       = "scratch/di_fh.stan",
+    model_name = "ii_fh",
+    data       = stan_data,
+    chains     = 4,
+    iter       = 10000,
+    cores      = 4,
+    seed       = 42
+  )
+}
+
+# run LOO for all species
+loo_fits_indirect <- setNames(
+  map(species, fit_fh_loo_indirect),
+  species
+)
+
+# generate predictions for each held-out species
+loo_results_indirect <- map_dfr(species, function(sp) {
+  expert_best <- indirect_fh_hd %>%
+    filter(species == sp) %>%
+    arrange(expert_id) %>%
+    mutate(estimate = pmax(estimate / 100, new_zero)) %>%
+    pull(estimate)
+  
+  pred <- loo_predict(loo_fits_indirect[[sp]], expert_best)
+  
+  tibble(
+    species = sp,
+    actual  = actual_fh$actual[actual_fh$species == sp] / 100,
+    median  = pred$median,
+    lower90 = pred$lower90,
+    upper90 = pred$upper90
+  )
+}) %>%
+  mutate(contains_actual = actual >= lower90 & actual <= upper90)
+
+# plot
+indirect_expert_mean <- indirect_fh_hd %>%
+  group_by(species) %>%
+  summarise(mean_estimate = mean(estimate, na.rm = TRUE) / 100)
+
+ggplot(loo_results_indirect, aes(x = species, y = median)) +
+  geom_pointrange(aes(ymin = lower90, ymax = upper90,
+                      colour = contains_actual)) +
+  geom_point(aes(y = actual), colour = "cornflowerblue", size = 3) +
+  geom_point(data = indirect_expert_mean,
+             aes(x = species, y = mean_estimate),
+             colour = "firebrick", shape = 17, size = 3) +
+  scale_colour_manual(values = c("TRUE" = "black", "FALSE" = "grey60")) +
+  labs(
+    title    = "Indirect LOO posterior predictive intervals vs actual flight height",
+    subtitle = "90% PI (black/grey) | blue circle = actual | red triangle = expert mean",
+    y        = "Flight height (proportion)",
+    colour   = "Contains actual"
+  ) +
+  theme_bw(14)
+
+
+
+
+#comparing the methods
+
+library(tidyverse)
+
+# ── Standardise all three methods to a common format ─────────────────────────
+
+results_dd <- direct_fh_hd_aggregated %>%
+  left_join(actual_fh, by = "species") %>%
+  transmute(
+    species,
+    method   = "Direct-Direct",
+    actual   = actual / 100,
+    estimate = best_avg / 100,
+    lower    = lower_avg / 100,
+    upper    = upper_avg / 100
+  )
+
+results_di <- loo_results %>%
+  transmute(
+    species,
+    method   = "Direct-Indirect LOO",
+    actual,
+    estimate = median,
+    lower    = lower90,
+    upper    = upper90
+  )
+
+results_ii <- loo_results_indirect %>%
+  transmute(
+    species,
+    method   = "Indirect-Indirect LOO",
+    actual,
+    estimate = median,
+    lower    = lower90,
+    upper    = upper90
+  )
+
+all_results <- bind_rows(results_dd, results_di, results_ii)
+
+# ── Compute per-species metrics ───────────────────────────────────────────────
+
+all_results <- all_results %>%
+  mutate(
+    abs_error      = abs(estimate - actual),
+    sq_error       = (estimate - actual)^2,
+    contains_actual = actual >= lower & actual <= upper,
+    interval_width  = upper - lower
+  )
+
+# ── Summary metrics per method ────────────────────────────────────────────────
+
+method_metrics <- all_results %>%
+  group_by(method) %>%
+  summarise(
+    MAE                = mean(abs_error),
+    RMSE               = sqrt(mean(sq_error)),
+    Coverage           = sum(contains_actual),
+    Coverage_pct       = mean(contains_actual) * 100,
+    Mean_interval_width = mean(interval_width),
+    .groups = "drop"
+  )
+
+print(method_metrics)
+
+# ── Per-species breakdown table ───────────────────────────────────────────────
+
+per_species_metrics <- all_results %>%
+  select(method, species, actual, estimate, lower, upper,
+         abs_error, contains_actual, interval_width) %>%
+  arrange(method, species)
+
+print(per_species_metrics)
+
+# ── Plot: MAE and RMSE ────────────────────────────────────────────────────────
+
+method_metrics %>%
+  select(method, MAE, RMSE) %>%
+  pivot_longer(c(MAE, RMSE), names_to = "metric", values_to = "value") %>%
+  ggplot(aes(x = method, y = value, fill = method)) +
+  geom_col() +
+  facet_wrap(~ metric, scales = "free_y") +
+  labs(title = "Accuracy by method", y = "Error (proportion)", x = NULL) +
+  theme_bw(14) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 20, hjust = 1))
+
+# ── Plot: Coverage and interval width ────────────────────────────────────────
+
+method_metrics %>%
+  select(method, Coverage_pct, Mean_interval_width) %>%
+  pivot_longer(c(Coverage_pct, Mean_interval_width),
+               names_to = "metric", values_to = "value") %>%
+  ggplot(aes(x = method, y = value, fill = method)) +
+  geom_col() +
+  geom_hline(data = data.frame(metric = "Coverage_pct", value = 90),
+             aes(yintercept = value),
+             linetype = "dashed", colour = "firebrick") +
+  facet_wrap(~ metric, scales = "free_y") +
+  labs(title = "Calibration by method", y = NULL, x = NULL) +
+  theme_bw(14) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 20, hjust = 1))
+
+
 
