@@ -51,20 +51,50 @@ direct_fh_hd <- direct_fh_hd %>%
   pivot_wider(names_from = "parameter", values_from = "value") %>% 
   rename(expert_id = `Please enter your unique ID code below`)
 
+species_codes <- function(x) {
+  case_match(x,
+             "Surf Scoter"     ~ "SUSC",
+             "Common Murre"    ~ "COMU",
+             "Herring Gull"    ~ "HERG",
+             "Common Loon"     ~ "COLO",
+             "Northern Fulmar" ~ "NOFU",
+             "Northern Gannet" ~ "NOGA"
+  )
+}
 
-ggplot(direct_fh_hd, aes(expert_id, best)) +
-  geom_pointrange(aes(ymin = lowest, ymax = highest, color = confidence)) +
-  geom_hline(aes(yintercept = actual), 
-             actual_fh, 
+direct_fh_hd %>%
+  mutate(species = species_codes(species)) %>%
+  ggplot(aes(expert_id, best)) +
+  geom_pointrange(aes(ymin = lowest, ymax = highest, color = confidence),
+                  linewidth = 0.8, fatten = 2) +
+  geom_hline(aes(yintercept = actual),
+             actual_fh %>% mutate(species = species_codes(species)),
              color = "cornflowerblue",
              linetype = "dashed",
              linewidth = 1.2) +
-  scale_color_viridis_c(option = "plasma") +
+  scale_color_viridis_c(
+    option = "plasma",
+    name   = "Expert\nconfidence (%)"
+  ) +
   facet_grid(rows = vars(species)) +
-  theme_bw(14)
+  labs(
+    title    = "Expert direct flight height estimates by species",
+    subtitle = "Dashed blue line = observed value; point ranges = expert lower/best/upper estimates",
+    x        = "Expert ID",
+    y        = "Flight height (% time at rotor height)"
+  ) +
+  theme_bw(14) +
+  theme(
+    strip.text       = element_text(face = "italic", size = 12),
+    strip.background = element_rect(fill = "grey92", colour = NA),
+    panel.spacing    = unit(0.6, "lines"),
+    legend.position  = "right",
+    plot.title       = element_text(face = "bold", size = 15),
+    plot.subtitle    = element_text(size = 11, colour = "grey40"),
+    axis.text.x      = element_text(angle = 45, hjust = 1)
+  )
 
-
-
+ggsave("direct_fh_plot.png", width = 12, height = 6, dpi = 300)
 
 # flight height indirect --------------------------------------------------
 #this is by sp and expert, the point estimate that the indirect model produces 
@@ -108,18 +138,32 @@ indirect_fh_hd <- indirect_fh_hd %>%
   )
   
 
-ggplot(indirect_fh_hd, aes(expert_id, estimate)) +
-  geom_point() +
-  geom_hline(aes(yintercept = actual), 
-             actual_fh, 
+indirect_fh_hd %>%
+  mutate(species = species_codes(species)) %>%
+  ggplot(aes(expert_id, estimate)) +
+  geom_point(size = 2.5) +
+  geom_hline(aes(yintercept = actual),
+             actual_fh %>% mutate(species = species_codes(species)),
              color = "cornflowerblue",
              linetype = "dashed",
              linewidth = 1.2) +
-  scale_color_viridis_c(option = "plasma") +
   facet_grid(rows = vars(species)) +
-  theme_bw(14)
-
-
+  labs(
+    title    = "Expert indirect flight height estimates by species",
+    subtitle = "Dashed blue line = observed value; points = expert derived estimates",
+    x        = "Expert ID",
+    y        = "Flight height (% time at rotor height)"
+  ) +
+  theme_bw(14) +
+  theme(
+    strip.text       = element_text(face = "italic", size = 12),
+    strip.background = element_rect(fill = "grey92", colour = NA),
+    panel.spacing    = unit(0.6, "lines"),
+    plot.title       = element_text(face = "bold", size = 15),
+    plot.subtitle    = element_text(size = 11, colour = "grey40"),
+    axis.text.x      = element_text(angle = 45, hjust = 1)
+  )
+ggsave("indirect_fh_plot.png", width = 12, height = 6, dpi = 300)
 
 
 
@@ -159,9 +203,8 @@ ggplot(direct_fh_hd_aggregated, aes(x = species, y = best_avg)) +
 # direct-indirect model ---------------------------------------------------
 
 # y ~ RV(E, V)
-# link(E) = sum_i { (beta_0[i] + x_i) * beta_1[i]}
-# beta_0 ~ Normal(0, sigma)
-# beta_1 ~ Dirichlet(alpha)
+# link(E) = sum_i {x_i * beta[i]}
+# beta ~ Dirichlet(alpha)
 
 di_df <- direct_fh_hd %>% 
   select(species, expert_id, best) %>% 
@@ -290,10 +333,10 @@ loo_predict <- function(loo_mod, expert_best) {
   # expert_best: named vector of expert estimates for the held-out species,
   # in the same expert order as the model was fit, scaled to [0,1]
   
-  loo_draws <- as_draws_df(loo_mod)
+  loo_draws <- as_draws_df(loo_mod) #draws from posterier estimates of the parameters (beta and shapes)
   
   beta_draws <- as.matrix(select(loo_draws, starts_with("beta")))
-  phi_draws   <- loo_draws$phi
+  phi_draws   <- loo_draws$phi #pulling out your concentrations (how wide is the distribution)
   
   n_draws <- nrow(beta_draws)
   
@@ -310,7 +353,7 @@ loo_predict <- function(loo_mod, expert_best) {
   
   list(
     Y_pred  = Y_pred,
-    median  = median(Y_pred),
+    mean  = mean(Y_pred),
     lower90 = quantile(Y_pred, 0.05),
     upper90 = quantile(Y_pred, 0.95)
   )
@@ -337,8 +380,8 @@ loo_results <- map_dfr(species, function(sp) {
   
   tibble(
     species = sp,
-    actual  = actual_fh$actual[actual_fh$species == sp] / 100,
-    median  = pred$median,
+    actual  = pmax(actual_fh$actual[actual_fh$species == sp]/100, new_zero),
+    mean  = pred$mean,
     lower90 = pred$lower90,
     upper90 = pred$upper90
   )
@@ -346,7 +389,7 @@ loo_results <- map_dfr(species, function(sp) {
   mutate(contains_actual = actual >= lower90 & actual <= upper90)
 
 # plot
-ggplot(loo_results, aes(x = species, y = median)) +
+ggplot(loo_results, aes(x = species, y = mean)) +
   geom_pointrange(aes(ymin = lower90, ymax = upper90,
                       colour = contains_actual)) +
   geom_point(aes(y = actual), colour = "cornflowerblue", size = 3) +
@@ -415,8 +458,8 @@ loo_results_indirect <- map_dfr(species, function(sp) {
   
   tibble(
     species = sp,
-    actual  = actual_fh$actual[actual_fh$species == sp] / 100,
-    median  = pred$median,
+    actual  = pmax(actual_fh$actual[actual_fh$species == sp]/100, new_zero),
+    mean  = pred$mean,
     lower90 = pred$lower90,
     upper90 = pred$upper90
   )
@@ -428,13 +471,13 @@ indirect_expert_mean <- indirect_fh_hd %>%
   group_by(species) %>%
   summarise(mean_estimate = mean(estimate, na.rm = TRUE) / 100)
 
-ggplot(loo_results_indirect, aes(x = species, y = median)) +
+ggplot(loo_results_indirect, aes(x = species, y = mean)) +
   geom_pointrange(aes(ymin = lower90, ymax = upper90,
                       colour = contains_actual)) +
   geom_point(aes(y = actual), colour = "cornflowerblue", size = 3) +
-  geom_point(data = indirect_expert_mean,
-             aes(x = species, y = mean_estimate),
-             colour = "firebrick", shape = 17, size = 3) +
+#  geom_point(data = indirect_expert_mean,
+             # aes(x = species, y = mean_estimate),
+             # colour = "firebrick", shape = 17, size = 3) +
   scale_colour_manual(values = c("TRUE" = "black", "FALSE" = "grey60")) +
   labs(
     title    = "Indirect LOO posterior predictive intervals vs actual flight height",
@@ -469,7 +512,7 @@ results_di <- loo_results %>%
     species,
     method   = "Direct-Indirect LOO",
     actual,
-    estimate = median,
+    estimate = mean,
     lower    = lower90,
     upper    = upper90
   )
@@ -479,7 +522,7 @@ results_ii <- loo_results_indirect %>%
     species,
     method   = "Indirect-Indirect LOO",
     actual,
-    estimate = median,
+    estimate = mean,
     lower    = lower90,
     upper    = upper90
   )
@@ -549,6 +592,12 @@ method_metrics %>%
   theme_bw(14) +
   theme(legend.position = "none",
         axis.text.x = element_text(angle = 20, hjust = 1))
+
+
+
+
+
+
 
 
 

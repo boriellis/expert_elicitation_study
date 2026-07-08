@@ -81,7 +81,8 @@ make_likert_plot <- function(survey,
   
   plot(likert(likert_cols), centered = TRUE, panel.strip.color = strip_colour) +
     scale_fill_manual(values = fill_colours, breaks = levels) +
-    shared_theme
+    shared_theme +
+    theme(legend.position = "bottom")
 }
 
 #' Build the 3-level preference bar as a plain ggplot
@@ -127,7 +128,7 @@ make_preference_plot <- function(survey,
 }
 
 #' Save a plot as PNG
-save_plot <- function(plot, path, width = 10, height = 6, dpi = 300) {
+save_plot <- function(plot, path, width = 14, height = 6, dpi = 300) {
   ggsave(path, plot = plot, width = width, height = height, dpi = dpi)
   message("Saved: ", path)
 }
