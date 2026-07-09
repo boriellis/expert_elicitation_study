@@ -38,3 +38,42 @@ plot(uds[["CAAU_annual"]])
 plot(uds[["LAAL_annual"]])
 plot(uds[["NOFU_annual"]])
 plot(uds[["POJA_annual"]])
+
+
+CAAUss <- vect("data/raw_data/raw_survey_outputs/seasketch/cassin's_aukletplease_represent_.geojson.json")
+
+plot(CAAUss) 
+
+single_CAAU <- CAAUss %>% 
+  filter(response_id == 15662) %>% 
+  mutate(ud = as.numeric(CAAU_ud))
+
+ggplot(single_CAAU, aes(fill = CAAU_ud)) + geom_spatvector()
+
+single_CAAU_rast <- rasterize(project(single_CAAU, crs(uds[["CAAU_annual"]])),
+          uds[["CAAU_annual"]], field = "ud", fun = "min") %>% 
+  mask(uds[["CAAU_annual"]])
+
+single_CAAU_ud <- uds[["CAAU_annual"]]
+single_CAAU_ud[!is.na(single_CAAU_ud)] <- 0
+single_CAAU_ud <- single_CAAU_ud + subst(single_CAAU_rast, NA, 0)
+
+single_CAAU_ud <- single_CAAU_ud %>% 
+  subst(50, 0.5 / global(single_CAAU_ud == 50, sum, na.rm = TRUE)) %>% 
+  subst(95, 0.45 / global(single_CAAU_ud == 95, sum, na.rm = TRUE)) %>% 
+  subst(100, 0.05 / global(single_CAAU_ud == 100, sum, na.rm = TRUE))
+names(single_CAAU_ud) <- "ud_expert"
+
+plot(single_CAAU_ud)
+
+CAAU_ud_actual <- uds[["CAAU_annual"]] %>% 
+  subst(1000, 0) %>% 
+  subst(0.5, 0.5 / global(uds[["CAAU_annual"]] == 0.5, sum, na.rm = TRUE)) %>% 
+  subst(0.95, 0.45 / global(uds[["CAAU_annual"]] == 0.95, sum, na.rm = TRUE)) %>% 
+  subst(1.0, 0.05 / global(uds[["CAAU_annual"]] == 1.0, sum, na.rm = TRUE))
+
+as.data.frame(uds[["CAAU_annual"]], xy = TRUE) %>% 
+  rename(ud_actual = CAAU_annual) %>% 
+  mutate(ud_actual = ud_actual / sum(ud_actual))
+
+view(CAAUss)
